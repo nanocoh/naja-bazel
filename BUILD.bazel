@@ -1,4 +1,5 @@
-load("@bazel-orfs//:openroad.bzl", "orfs_flow")
+load("@bazel-orfs//:openroad.bzl", "orfs_flow", "orfs_run", "orfs_synth")
+load("@bazel_naja_rules_python//python:defs.bzl", "py_binary")
 load("@bazel_naja_rules_python//python:pip.bzl", "compile_pip_requirements")
 load("chisel.bzl", "chisel_binary")
 
@@ -7,6 +8,55 @@ compile_pip_requirements(
     src = "requirements.in",
     python_version = "3.13",
     requirements_txt = "requirements_lock_3_13.txt",
+)
+
+orfs_synth(
+    name = "RetimeFanout_naja_synth",
+    arguments = {
+        "SDC_FILE": "$(location :constraints.sdc)",
+    },
+    data = [":constraints.sdc"],
+    module_top = "RetimeFanout",
+    variant = "naja",
+    verilog_files = [":genverilog"],
+)
+
+filegroup(
+    name = "RetimeFanout_naja_unedited",
+    srcs = ["RetimeFanout_naja_synth"],
+    output_group = "1_synth.v",
+)
+
+# Hack! In the future ORFS will drop merged.lib and
+# include multiple .lib files, meanwhile extract it
+orfs_run(
+    name = "RetimeFanout_naja_mergedlib",
+    src = ":RetimeFanout_naja_synth",
+    outs = [":objects/asap7/RetimeFanout/naja/lib/merged.lib"],
+    extra_args = " ".join([
+        "print-OBJECTS_DIR",
+        "$(location :objects/asap7/RetimeFanout/naja/lib/merged.lib)",
+    ]),
+    script = "@docker_orfs//:OpenROAD-flow-scripts/flow/scripts/noop.tcl",
+)
+
+py_binary(
+    name = "naja_edit",
+    srcs = ["naja_edit.py"],
+    deps = ["@naja-bazel-pip//najaeda"],
+)
+
+genrule(
+    name = "naja",
+    srcs = [
+        ":RetimeFanout_naja_unedited",
+        ":RetimeFanout_naja_mergedlib",
+    ],
+    outs = ["RetimeFanout-naja.v"],
+    cmd = "$(locations :naja_edit) $(location :RetimeFanout_naja_mergedlib) $(location :RetimeFanout-naja.v) $(location :RetimeFanout_naja_unedited)",
+    tools = [
+        ":naja_edit",
+    ],
 )
 
 orfs_flow(
@@ -19,7 +69,8 @@ orfs_flow(
         "GND_NETS_VOLTAGES": "",
     },
     sources = {
-        "SDC_FILE": [":constraints.sdc"]
+        "SDC_FILE": [":constraints.sdc"],
+        "SYNTH_NETLIST_FILES": [":naja"],
     },
     verilog_files = [
         ":genverilog",
@@ -32,15 +83,15 @@ chisel_binary(
     main_class = "GenerateRetimeFanout",
     #resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@openroad_maven//:com_github_scopt_scopt_2_13",
+        "@naja_bazel_maven//:com_github_scopt_scopt_2_13",
     ],
 )
 
 genrule(
     name = "genverilog",
     srcs = [],
-    outs = ["array.sv"],
-    cmd = "$(execpath :generate_verilog) --firtool-binary-path $(execpath @circt//:bin/firtool) -- --default-layer-specialization=disable -o $(location :array.sv)",
+    outs = ["RetimeFanout.sv"],
+    cmd = "$(execpath :generate_verilog) --firtool-binary-path $(execpath @circt//:bin/firtool) -- --default-layer-specialization=disable -o $(location :RetimeFanout.sv)",
     tools = [
         ":generate_verilog",
         "@circt//:bin/firtool",
