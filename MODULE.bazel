@@ -1,0 +1,135 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2025, Precision Innovations Inc.
+
+module(
+    name = "bazel-naja",
+)
+
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "rules_cc", version = "0.1.2")
+bazel_dep(name = "rules_flex", version = "0.3.1")
+bazel_dep(name = "rules_bison", version = "0.3.1")
+bazel_dep(name = "rules_jvm_external", version = "6.4")
+bazel_dep(name = "rules_scala")
+git_override(
+    module_name = "rules_scala",
+    commit = "1aced658083aac6c636fcc03b7cd3952a426eda7",
+    remote = "https://github.com/bazelbuild/rules_scala",
+)
+
+bazel_dep(name = "rules_verilator", version = "5.034")
+single_version_override(
+    module_name = "rules_verilator",
+    registry = "https://raw.githubusercontent.com/Pinata-Consulting/ascenium-registry/683f93e670a04f8d3d47316c42d197d8ac095a00/",
+    version = "5.034",
+)
+
+single_version_override(
+    module_name = "verilator",
+    registry = "https://raw.githubusercontent.com/Pinata-Consulting/ascenium-registry/683f93e670a04f8d3d47316c42d197d8ac095a00/",
+    version = "5.034.ar.1",
+)
+
+single_version_override(
+    module_name = "systemc",
+    registry = "https://raw.githubusercontent.com/Pinata-Consulting/ascenium-registry/683f93e670a04f8d3d47316c42d197d8ac095a00/",
+    version = "3.0.1",
+)
+
+
+# FYI: Comment out on NixOS where you'd like to use the local clang toolchain.
+register_toolchains(
+    "@rules_verilator//verilator:verilator_toolchain",
+)
+
+bazel_dep(
+    name = "rules_python",
+    version = "1.2.0",
+    # reduce namespace collisions by prefixing with openroad
+    repo_name = "bazel_naja_rules_python",
+)
+
+python = use_extension("@bazel_naja_rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    ignore_root_user_error = True,
+    python_version = "3.13",
+)
+
+pip = use_extension("@bazel_naja_rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "openroad-pip",
+    python_version = "3.13",
+    requirements_lock = "//:requirements_lock_3_13.txt",
+)
+use_repo(pip, "openroad-pip")
+
+bazel_dep(name = "bazel-orfs")
+
+# To bump version, run: bazelisk run @bazel-orfs//:bump
+git_override(
+    module_name = "bazel-orfs",
+    commit = "abacf584d7515bebec96491c757a806431b7f9f7",
+    remote = "https://github.com/The-OpenROAD-Project/bazel-orfs.git",
+)
+
+orfs = use_extension("@bazel-orfs//:extension.bzl", "orfs_repositories")
+
+# To bump version, run: bazelisk run @bazel-orfs//:bump
+orfs.default(
+    # Official image https://hub.docker.com/r/openroad/orfs/tags
+    image = "docker.io/openroad/orfs:v3.0-3503-gd7c7e73f",
+    sha256 = "d5539ade517724de3765362589be443afb2624b14391b365612c8949a7c99a19",
+)
+use_repo(orfs, "com_github_nixos_patchelf_download")
+use_repo(orfs, "docker_orfs")
+
+SCALA_VERSION = "2.13.16"
+
+SCALA_VERSION_SHORT = SCALA_VERSION.rpartition(".")[0]
+
+scala_config = use_extension(
+    "@rules_scala//scala/extensions:config.bzl",
+    "scala_config",
+)
+scala_config.settings(
+    scala_version = SCALA_VERSION,
+)
+use_repo(scala_config, "rules_scala_config")
+
+scala_deps = use_extension(
+    "@rules_scala//scala/extensions:deps.bzl",
+    "scala_deps",
+)
+scala_deps.settings(
+    fetch_sources = True,
+)
+scala_deps.scala()
+scala_deps.scalatest()
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "openroad_maven",
+    artifacts = [
+        "org.chipsalliance:chisel_2.13:7.0.0-RC3",
+        "org.chipsalliance:chisel-plugin_2.13.16:7.0.0-RC3",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+        "https://s01.oss.sonatype.org/content/repositories/releases",
+        "https://s01.oss.sonatype.org/content/repositories/snapshots",
+    ],
+)
+use_repo(maven, "openroad_maven")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "circt",
+    build_file_content = """
+exports_files(glob(["bin/*"]), visibility = ["//visibility:public"])
+""",
+    sha256 = "b1b57d1b76ceba2bb37229dab53839d5db6d61394149708c71f6265565991ce6",
+    strip_prefix = "firtool-1.108.0",
+    url = "https://github.com/llvm/circt/releases/download/firtool-1.108.0/firrtl-bin-linux-x64.tar.gz",
+)
