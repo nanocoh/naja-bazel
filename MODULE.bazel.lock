@@ -1012,9 +1012,9 @@
     "@@rules_python+//python/extensions:pip.bzl%pip": {
       "general": {
         "bzlTransitiveDigest": "VtiDGyXWdy1DE8vlXtx5MUEA94puGtMXCDxTMi796Y0=",
-        "usagesDigest": "JjdeaXxfxKa5b6DBgx74feMZvZ6AsJ6/6nCq1zmtM3E=",
+        "usagesDigest": "LhM0YGJPCxV/x9sjOjk06qLDAHsI8VWjInX8xXGJuC8=",
         "recordedFileInputs": {
-          "@@//requirements_lock_3_13.txt": "264a6a73dcb1413090bb65b788794070a0f4146a8a894b37abe44b2dda1534fb",
+          "@@//requirements_lock_3_13.txt": "a7939248d687961d17f51f0bfd824de3ca3147beb1fa3f2aad1b9f641994c52d",
           "@@bazel-orfs+//requirements_lock_3_13.txt": "6d409e2c9f81ceee67c23e6f26b6742b4ee6c32826c7d0591c5c57df72a6a16b",
           "@@rules_fuzzing+//fuzzing/requirements.txt": "ab04664be026b632a0d2a2446c4f65982b7654f5b6851d2f9d399a19b7242a5b",
           "@@rules_python+//tools/publish/requirements_darwin.txt": "095d4a4f3d639dce831cd493367631cd51b53665292ab20194bac2c0c6458fa8",
@@ -1160,6 +1160,15 @@
               "python_interpreter_target": "@@rules_python++python+python_3_13_host//:python",
               "repo": "bazel-orfs-pip_313",
               "requirement": "tzdata==2025.2 --hash=sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8 --hash=sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9"
+            }
+          },
+          "naja-bazel-pip_313_najaeda": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@naja-bazel-pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_13_host//:python",
+              "repo": "naja-bazel-pip_313",
+              "requirement": "najaeda==0.2.4 --hash=sha256:05f28a0ddea3e6bfb2f1bcb0d9d4ef43f579c078977fd635b7e01bba6048209e --hash=sha256:1bdd5e3a761481a7d407cab2f1b8becb4290e17ab0cc687d109d496e3766aa8d --hash=sha256:2fb302829b29fecd594a44f2756aa50895c2c75fc06ac76fc048d997178bb6c0 --hash=sha256:3e29501619573a1bb22e0cf90298fcc3416763eded648aa71ff8d24c037b4a61 --hash=sha256:4065141bfe39de71f051ec08087165f8aa7d80c7e49857fb1a47206b086cb68b --hash=sha256:4218261b05e1921369e866d9d4815e4283dbae99dbb8d336f564897bddc17d01 --hash=sha256:6a298c8c5cbfe4ac9c003ac694ea4b586f78ae5f294cb0227e32541c0e591016 --hash=sha256:72347ac1f0c9a84665ce44616e637eb55a40b8db301914b272d15a668c89c2e1 --hash=sha256:78aea1e3c76ba0789ec8f2f96ae280ac67040cb8ad291100aac5d522633b6cb6 --hash=sha256:7f89db59a13090cc190634f472bad880ebfcfcec31be7bd61853917349b13af6 --hash=sha256:8350923734c14408df8431adf1f8628d40dcbc53058e2a0a6b7cb514f198a2c5 --hash=sha256:a510dab4382aad140278938992119c0c3a05578fb530cd7e1789f8baccbf3405 --hash=sha256:a57be8a7a1585bf2b482baa76d47c72b36f7bd0009f6bdd5dc3bc615c14949b7 --hash=sha256:b8c249e7deaa902465a451fe247a8afa283652b2969773b253f83cbce4070978"
             }
           },
           "rules_fuzzing_py_deps_310_absl_py": {
@@ -3509,13 +3518,17 @@
               "groups": {}
             }
           },
-          "openroad-pip": {
+          "naja-bazel-pip": {
             "repoRuleId": "@@rules_python+//python/private/pypi:hub_repository.bzl%hub_repository",
             "attributes": {
-              "repo_name": "openroad-pip",
+              "repo_name": "naja-bazel-pip",
               "extra_hub_aliases": {},
-              "whl_map": {},
-              "packages": [],
+              "whl_map": {
+                "najaeda": "{\"naja-bazel-pip_313_najaeda\":[{\"version\":\"3.13\"}]}"
+              },
+              "packages": [
+                "najaeda"
+              ],
               "groups": {}
             }
           },

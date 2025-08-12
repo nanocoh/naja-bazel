@@ -37,7 +37,6 @@ single_version_override(
     version = "3.0.1",
 )
 
-
 # FYI: Comment out on NixOS where you'd like to use the local clang toolchain.
 register_toolchains(
     "@rules_verilator//verilator:verilator_toolchain",
@@ -58,11 +57,11 @@ python.toolchain(
 
 pip = use_extension("@bazel_naja_rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
-    hub_name = "openroad-pip",
+    hub_name = "naja-bazel-pip",
     python_version = "3.13",
     requirements_lock = "//:requirements_lock_3_13.txt",
 )
-use_repo(pip, "openroad-pip")
+use_repo(pip, "naja-bazel-pip")
 
 bazel_dep(name = "bazel-orfs")
 
@@ -109,7 +108,7 @@ scala_deps.scalatest()
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
-    name = "openroad_maven",
+    name = "naja_bazel_maven",
     artifacts = [
         "org.chipsalliance:chisel_2.13:7.0.0-RC3",
         "org.chipsalliance:chisel-plugin_2.13.16:7.0.0-RC3",
@@ -120,7 +119,7 @@ maven.install(
         "https://s01.oss.sonatype.org/content/repositories/snapshots",
     ],
 )
-use_repo(maven, "openroad_maven")
+use_repo(maven, "naja_bazel_maven")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
