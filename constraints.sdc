@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 set clk_name clock
 set clk_port_name clock
 set clk_period 250

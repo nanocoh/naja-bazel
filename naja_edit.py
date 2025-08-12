@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 # Load merged.lib and 1_synth.v, printa report, then
 # write it out again.
 from najaeda import netlist

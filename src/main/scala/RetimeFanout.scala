@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import circt.stage.ChiselStage
 import chisel3._
 import chisel3.util._

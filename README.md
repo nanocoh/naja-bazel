@@ -1,3 +1,6 @@
+<!--
+SPDX-License-Identifier: MIT
+-->
 # Naja Bazel OpenROAD flow
 
 Demonstrates how to use Naja and Bazel to generate reports.

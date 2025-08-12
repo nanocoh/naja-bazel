@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 # buildifier: disable=module-docstring
 load("@rules_scala//scala:scala.bzl", "scala_binary", "scala_library")
 

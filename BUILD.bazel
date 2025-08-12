@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 load("@bazel-orfs//:openroad.bzl", "orfs_flow", "orfs_run", "orfs_synth")
 load("@bazel_naja_rules_python//python:defs.bzl", "py_binary")
 load("@bazel_naja_rules_python//python:pip.bzl", "compile_pip_requirements")
