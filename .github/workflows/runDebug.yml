@@ -47,10 +47,10 @@ jobs:
         run: |
           bazelisk build //:RetimeFanout_grt //:naja
 
-      - name: Commit generated files
+      - name: Commit generated file
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add .
-          git diff --cached --quiet || git commit -m "Add generated files from CI"
+          git add bazel-out/k8-fastbuild/bin/RetimeFanout-naja.v
+          git diff --cached --quiet || git commit -m "Add generated RetimeFanout-naja.v from CI"
           git push
