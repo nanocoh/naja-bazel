@@ -47,14 +47,20 @@ jobs:
         run: |
           bazelisk build //:RetimeFanout_grt //:naja
 
-      - name: Commit generated file
+      - name: Copy generated file to repo
+        run: |
+          mkdir -p generated
+          cp bazel-out/k8-fastbuild/bin/RetimeFanout-naja.v generated/
+      
+      - name: Commit copied file
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git pull origin main --rebase
-          git add bazel-out/k8-fastbuild/bin/RetimeFanout-naja.v
+          git add generated/RetimeFanout-naja.v
           git diff --cached --quiet || git commit -m "Add generated RetimeFanout-naja.v from CI"
           git push origin main
+
 
 
 
