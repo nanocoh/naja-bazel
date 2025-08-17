@@ -54,7 +54,7 @@ jobs:
           git pull origin main --rebase
           mkdir -p generated
           cp bazel-out/k8-fastbuild/bin/RetimeFanout-naja.v generated/
-          cp out/k8-fastbuild/bin/objects/asap7/RetimeFanout/naja/lib/merged.lib generated/
+          cp bazel-out/k8-fastbuild/bin/objects/asap7/RetimeFanout/naja/lib/merged.lib generated/
           git add generated/RetimeFanout-naja.v
           git add generated/merged.lib
           git commit -m "Add generated RetimeFanout-naja.v from CI" || echo "No changes to commit"
