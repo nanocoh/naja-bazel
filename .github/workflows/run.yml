@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:    # <-- allows Manual “Run workflow” clicks
   push:
     branches: [ action ]
   pull_request:
