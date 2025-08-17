@@ -44,8 +44,3 @@ jobs:
       - name: Build ORFS flow and naja
         run: |
           bazelisk build //:RetimeFanout_grt //:naja
-
-      # Optional: invoke your GRT GUI run in headless mode (will immediately exit)
-      - name: Run GRT GUI (headless)
-        run: |
-          bazelisk run //:RetimeFanout_grt -- /tmp/grt gui_grt
