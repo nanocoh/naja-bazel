@@ -1014,7 +1014,7 @@
         "bzlTransitiveDigest": "VtiDGyXWdy1DE8vlXtx5MUEA94puGtMXCDxTMi796Y0=",
         "usagesDigest": "LhM0YGJPCxV/x9sjOjk06qLDAHsI8VWjInX8xXGJuC8=",
         "recordedFileInputs": {
-          "@@//requirements_lock_3_13.txt": "a7939248d687961d17f51f0bfd824de3ca3147beb1fa3f2aad1b9f641994c52d",
+          "@@//requirements_lock_3_13.txt": "2c6de494dfc283eb74f3f4811809f94504254ca6d30aa6ef09c8440802d8f508",
           "@@bazel-orfs+//requirements_lock_3_13.txt": "6d409e2c9f81ceee67c23e6f26b6742b4ee6c32826c7d0591c5c57df72a6a16b",
           "@@rules_fuzzing+//fuzzing/requirements.txt": "ab04664be026b632a0d2a2446c4f65982b7654f5b6851d2f9d399a19b7242a5b",
           "@@rules_python+//tools/publish/requirements_darwin.txt": "095d4a4f3d639dce831cd493367631cd51b53665292ab20194bac2c0c6458fa8",
@@ -1168,7 +1168,7 @@
               "dep_template": "@naja-bazel-pip//{name}:{target}",
               "python_interpreter_target": "@@rules_python++python+python_3_13_host//:python",
               "repo": "naja-bazel-pip_313",
-              "requirement": "najaeda==0.2.4 --hash=sha256:05f28a0ddea3e6bfb2f1bcb0d9d4ef43f579c078977fd635b7e01bba6048209e --hash=sha256:1bdd5e3a761481a7d407cab2f1b8becb4290e17ab0cc687d109d496e3766aa8d --hash=sha256:2fb302829b29fecd594a44f2756aa50895c2c75fc06ac76fc048d997178bb6c0 --hash=sha256:3e29501619573a1bb22e0cf90298fcc3416763eded648aa71ff8d24c037b4a61 --hash=sha256:4065141bfe39de71f051ec08087165f8aa7d80c7e49857fb1a47206b086cb68b --hash=sha256:4218261b05e1921369e866d9d4815e4283dbae99dbb8d336f564897bddc17d01 --hash=sha256:6a298c8c5cbfe4ac9c003ac694ea4b586f78ae5f294cb0227e32541c0e591016 --hash=sha256:72347ac1f0c9a84665ce44616e637eb55a40b8db301914b272d15a668c89c2e1 --hash=sha256:78aea1e3c76ba0789ec8f2f96ae280ac67040cb8ad291100aac5d522633b6cb6 --hash=sha256:7f89db59a13090cc190634f472bad880ebfcfcec31be7bd61853917349b13af6 --hash=sha256:8350923734c14408df8431adf1f8628d40dcbc53058e2a0a6b7cb514f198a2c5 --hash=sha256:a510dab4382aad140278938992119c0c3a05578fb530cd7e1789f8baccbf3405 --hash=sha256:a57be8a7a1585bf2b482baa76d47c72b36f7bd0009f6bdd5dc3bc615c14949b7 --hash=sha256:b8c249e7deaa902465a451fe247a8afa283652b2969773b253f83cbce4070978"
+              "requirement": "najaeda==0.2.5 --hash=sha256:0befc2227d5af27af5e06a021f4eb178fac21508a6ecfbbeb7db8b1c901cf500 --hash=sha256:104b1b3f9ce241feebfe8939d12a1e775835451273a3e567448af6298e6f5998 --hash=sha256:30225604ba20aee07d9df5f14140a6857207b67f39dad14545b8e3b3b20fc51f --hash=sha256:5409d1fa0ce108b64498a1ee31abdbcea74e6251c26e5934ef937effbe13555a --hash=sha256:7997c21c1143293122c078cf787dd2a86097a3d2e609702ac7a494feea41b4cb --hash=sha256:7ecea07a822f56f2618ca1277d91977fc58c216761365f2dc5a034222159b89c --hash=sha256:849c7304f72279494dc9cfe4747b6d33486d522f5709162ded4a7381f831cd5e --hash=sha256:9e34aa8fcfb6b5da69cabc383a76e49ffc90db109ba333b0f8ec349b678725a4 --hash=sha256:9fa7157c16f15307c809b18b9a1f70d2082a8da0d24b3667c100bc206741a3f2 --hash=sha256:a662a603cba52989733c645369e8aa3507d5da5f78717be82e628b31c1e03bba --hash=sha256:bc642de9c6d404c2af0fbd936c5b1c307f2e69d6ebed0f0bf3112e1eebee552a --hash=sha256:c354d8a762356c276a517fc806742f006f6a82c5a0078c3a5aa7005478e73d78 --hash=sha256:e49c1991bb7d6e561966e74186d58e13db51205da22a8bf389e13354ae654752 --hash=sha256:f31731769b6ae3e75d2c71ea5007a8eefd0e3a17a85067e9764f2f47ad56393e"
             }
           },
           "rules_fuzzing_py_deps_310_absl_py": {
