@@ -1,0 +1,56 @@
+name: runDebug
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ action ]
+  pull_request:
+    branches: [ action ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # Needed to push back to repo
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Bazelisk
+        run: |
+          mkdir -p $HOME/.local/bin
+          curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 -o $HOME/.local/bin/bazelisk
+          chmod +x $HOME/.local/bin/bazelisk
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Cache Bazel & Bazelisk
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/bazel
+            ~/.cache/bazelisk
+          key: ${{ runner.os }}-bazel-${{ hashFiles('**/MODULE.bazel') }}
+          restore-keys: |
+            ${{ runner.os }}-bazel-
+
+      - name: Verify Bazelisk
+        run: bazelisk version
+
+      - name: Build ORFS flow and naja
+        run: |
+          bazelisk build //:RetimeFanout_grt //:naja
+
+      - name: Commit generated files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Add generated files from CI"
+          git push
